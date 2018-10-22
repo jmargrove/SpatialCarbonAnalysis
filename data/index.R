@@ -1,4 +1,3 @@
-
 # importing data 
 plantedCarbon <- raster("./data/PlantedAreaCarbon.tif")
 unPlantedCarbon <- raster("./data/UnPlantedAreaCarbon.tif")

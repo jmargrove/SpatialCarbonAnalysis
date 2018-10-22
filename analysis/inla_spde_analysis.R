@@ -5,6 +5,8 @@ source("./packages.R")
 # importing data 
 source("./data/organised_data.R")
 
+
+
 # setting up the spde model in inla 
 coords <- cbind(data$x, data$y)
 mesh <- inla.mesh.2d(coords, max.edge = c(500, 1000), 
@@ -39,6 +41,11 @@ formula <- carbon ~ 0 + treatment + f(i, model = spde) + f(coupeYear, model = 'i
 
 model1 <- inla(formula, data = inla.stack.data(stk),
                control.predictor = list(A=inla.stack.A(stk)),
-               control.fixed = list(expand.factor.strategy="inla"), family = "gaussian")
+               control.fixed = list(expand.factor.strategy="inla"), family = "gaussian", 
+               inla.call = "submit")
 
 summary(model1)
+
+
+
+
