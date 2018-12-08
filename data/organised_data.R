@@ -1,5 +1,9 @@
-source("./data/index.R")
+#' @title Organise the data for analysis 
+#' @author James margrove 
+#' @description data organisation 
 
+# Import files 
+source("./data/index.R")
 
 # setting values for unplanted (1) and planted (2)
 values(unPlantedCarbon)[values(unPlantedCarbon) > 0] <- 1
@@ -7,15 +11,16 @@ values(plantedCarbon)[values(plantedCarbon) > 0] <- 10
 treatment <- merge(plantedCarbon, unPlantedCarbon)
 plot(treatment)
 
-treatment_scaled <- treatment#aggregate(treatment, fact = 5, FUN = mean)
+
+treatment_scaled <- treatment 
 values(treatment_scaled )[values(treatment_scaled ) <= 5] <- 1
 values(treatment_scaled )[values(treatment_scaled ) > 5] <- 10
 plot(treatment_scaled)
-?aggregate
-fullAreaCarbon_scaled <- fullAreaCarbon #aggregate(fullAreaCarbon, fact = 5, FUN = mean)
+
+fullAreaCarbon_scaled <- fullAreaCarbon 
 plot(fullAreaCarbon_scaled)
 
-# sorting raster maps to matrices 
+# Sorting raster maps to matrices 
 fullAreaCarbon_matrix <- as.matrix(fullAreaCarbon_scaled)
 treatment_matrix <- as.matrix(treatment_scaled)
 coupeYear_matrix <- as.matrix(coupeYear)
