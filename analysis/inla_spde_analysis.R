@@ -5,12 +5,16 @@ source("./packages.R")
 # importing data 
 source("./data/organised_data.R")
 
-
-
 # setting up the spde model in inla 
 coords <- cbind(data$x, data$y)
+dim(coords)
+diff(head(coords))
+head(data)
+30*30 * length(!is.na(data[data$treatment == "planted",]$carbon)) / 10000
+
+length(!is.na(data$carbon))
 mesh <- inla.mesh.2d(coords, max.edge = c(500, 1000), 
-                     cutoff = 100, 
+                     cutoff = 1000, 
                      offset=c(900, 5000))
 
 plot(mesh)
@@ -37,15 +41,14 @@ stk <- inla.stack(tag = "stk",
                                           coupeYear = as.factor(data$coupeYear),
                                           treatment = data$treatment)))
 
-formula <- carbon ~ 0 + treatment + f(i, model = spde) + f(coupeYear, model = 'iid')
+formula <- carbon ~ 0 + treatment + f(i, model = spde) 
 
 model1 <- inla(formula, data = inla.stack.data(stk),
                control.predictor = list(A=inla.stack.A(stk)),
                control.fixed = list(expand.factor.strategy="inla"), family = "gaussian", 
-               inla.call = "submit")
+               inla.call = "remote", num.threads = 16)
 
 summary(model1)
-
 
 
 
