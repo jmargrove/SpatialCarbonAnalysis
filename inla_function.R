@@ -1,10 +1,14 @@
-# @title inla spde analaysis 
+#' @title inla spde analaysis 
+#' @author James Margrove 
+#' @description inla analysis within a function, taking 3 arguments 
+#' @param cutoff minimum distance between nodes of the mesh 
+#' @param rho0 range of the random field 
+#' @param sig0 standard deviation of the random field 
 
 # importing packages
 source("./packages.R")
 # importing data 
 source("./data/organised_data.R")
-
 
 inla_function <- function(cutoff, rho0, sig0) {
 # setting up the spde model in inla 
@@ -42,6 +46,3 @@ inla_function <- function(cutoff, rho0, sig0) {
 
   return(model1)
 }
-
-
-# save(model_list, file = './results/model_list.R')
