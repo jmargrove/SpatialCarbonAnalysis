@@ -14,7 +14,7 @@ head(data)
 
 length(!is.na(data$carbon))
 mesh <- inla.mesh.2d(coords, max.edge = c(500, 1000), 
-                     cutoff = 1000, 
+                     cutoff = 5000, 
                      offset=c(900, 5000))
 
 plot(mesh)
@@ -24,7 +24,11 @@ rho0 = 100
 # this will move towards higher values of the range of the spatial effect and the P is 
 # the probability that it is lower. 
 sd(data$carbon)
-sig0 = 60
+range(data$carbon)
+mean(data$carbon)
+hist(data$carbon)
+
+sig0 = 50
 # what is the standard deviation of trhe response, and what is the probability that the 
 # actual sigma is greater than this. The lodgic is that it will shrink towards lower values. 
 
@@ -46,9 +50,14 @@ formula <- carbon ~ 0 + treatment + f(i, model = spde)
 model1 <- inla(formula, data = inla.stack.data(stk),
                control.predictor = list(A=inla.stack.A(stk)),
                control.fixed = list(expand.factor.strategy="inla"), family = "gaussian", 
-               inla.call = "remote", num.threads = 16)
+               inla.call = "remote", num.threads = 8)
 
 summary(model1)
 
+model_list <- list()
 
+model_list[[1]] <- model1
 
+summary(model_list[[1]])
+
+save(model_list, file = './results/model_list.R')
